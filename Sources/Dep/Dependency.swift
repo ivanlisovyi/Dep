@@ -8,6 +8,16 @@
 
 import Foundation
 
+/// A property wrapper which injects a dependency into another object.
+///
+/// `Dependency` property wrapper implemented using Service Locator
+/// under the hood. The property wrapper expect a dependency container to
+/// be provided
+///
+/// Usage:
+/// ```
+/// @Dependency(container: root) var someDependency: DependencyType;
+/// ```
 @propertyWrapper
 struct Dependency<T> {
     private lazy var service: T = {
@@ -16,6 +26,10 @@ struct Dependency<T> {
     
     var container: Resolver
     
+    /// Creates a property wrapper using a container to find
+    /// and resolve the dependency instance
+    /// - Parameters:
+    ///     - container: A *container* instance where depdendency can be found
     init(container: Resolver) {
         self.container = container
     }

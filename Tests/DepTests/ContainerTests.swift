@@ -54,8 +54,20 @@ class ContainerTests: XCTestCase {
         XCTAssertNotNil(dependency)
     }
     
+    func testThatItCreatesNewInstanceEveryTime() {
+        container = container?.register(FakeDependency.self, { _ in
+            return FakeDependency()
+        })
+        
+        let first = container?.resolve(FakeDependency.self)
+        let second = container?.resolve(FakeDependency.self)
+        
+        XCTAssertFalse(first === second)
+    }
+    
     static var allTests = [
         ("testRegister", testThatItRegistersDependency),
-        ("testResolve", testThatItResolvesDependency)
+        ("testResolve", testThatItResolvesDependency),
+        ("testNewInstance", testThatItCreatesNewInstanceEveryTime)
     ]
 }
