@@ -14,9 +14,9 @@ import Foundation
 /// under the hood. The property wrapper expect a dependency container to
 /// be provided.
 ///
-/// Usage:
+/// **Example:**
 /// ```
-/// @Dependency(container: root) var someDependency: DependencyType;
+/// @Dependency(container: #someContainer#) var someDependency: DependencyType;
 /// ```
 @propertyWrapper
 struct Dependency<T> {
