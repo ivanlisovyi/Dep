@@ -20,11 +20,11 @@ import Foundation
 ///
 /// let dependency = container.resolve(AnyDecoder.self)
 /// ```
-struct Container: Resolver {
+public struct Container: Resolver {
     /// The current known factories
     let factories: [AnyDependencyFactory]
     
-    init() {
+    public init() {
         factories = []
     }
     
@@ -39,7 +39,7 @@ struct Container: Resolver {
     ///     - factory: The closure-based factory that takes resolver as a parameter and returns
     ///     a dependency instance.
     /// - Returns: A `Resolver` instance.
-    func register<Dependency>(_ type: Dependency.Type, _ factory: @escaping (Resolver) -> Dependency) -> Container {
+    public func register<Dependency>(_ type: Dependency.Type, _ factory: @escaping (Resolver) -> Dependency) -> Container {
         return .init(factories: factories + [AnyDependencyFactory({ resolver -> Any in
             factory(resolver)
         })])
@@ -52,7 +52,7 @@ struct Container: Resolver {
     /// - Parameters:
     ///     - type The type of resolved dependency.
     /// - Returns: A `Dependency` instance.
-    func resolve<Dependency>(_ type: Dependency.Type) -> Dependency {
+    public func resolve<Dependency>(_ type: Dependency.Type) -> Dependency {
         let allResolved = factories.compactMap { $0.resolve(self) as? Dependency }
         guard let dependency = allResolved.first else {
             preconditionFailure("Cannot find depedency for type \(String(describing: type))")

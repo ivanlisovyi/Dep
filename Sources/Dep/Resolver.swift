@@ -12,7 +12,7 @@ import Combine
 /// Declares a type that can register and resolves dependencies of certain kind.
 ///
 /// Every Resolver must adhere to this contact.
-protocol Resolver {
+public protocol Resolver {
     /// Provides a way to register a closure-based factory for resolving dependencies of certain type.
     ///
     /// - Parameters:

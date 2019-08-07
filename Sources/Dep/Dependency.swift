@@ -19,27 +19,27 @@ import Foundation
 /// @Dependency(container: #someContainer#) var someDependency: DependencyType;
 /// ```
 @propertyWrapper
-struct Dependency<T> {
+public struct Dependency<T> {
     private lazy var service: T = {
         return container.resolve(T.self)
     }()
     
-    var container: Resolver
+    public var container: Resolver
     
     /// Creates a property wrapper using a container to find
     /// and resolve the dependency instance.
     /// - Parameter container: A `Resolver` instance where dependency can be found.
-    init(container: Resolver) {
+    public init(container: Resolver) {
         self.container = container
     }
     
-    var wrappedValue: T {
+    public var wrappedValue: T {
         mutating get {
             return service
         }
     }
     
-    var projectedValue: Self {
+    public var projectedValue: Self {
         get { self }
         set { self = newValue }
     }
