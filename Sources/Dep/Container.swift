@@ -22,13 +22,13 @@ import Foundation
 /// ```
 public struct Container: Resolver {
     /// The current known factories
-    let factories: [AnyDependencyFactory]
+    let factories: [ObjectIdentifier: AnyDependencyFactory]
     
     public init() {
-        factories = []
+        factories = [:]
     }
     
-    private init(factories: [AnyDependencyFactory]) {
+    private init(factories: [ObjectIdentifier: AnyDependencyFactory]) {
         self.factories = factories
     }
     
@@ -40,9 +40,10 @@ public struct Container: Resolver {
     ///     a dependency instance.
     /// - Returns: A `Resolver` instance.
     public func register<Dependency>(_ type: Dependency.Type, _ factory: @escaping (Resolver) -> Dependency) -> Container {
-        return .init(factories: factories + [AnyDependencyFactory({ resolver -> Any in
-            factory(resolver)
-        })])
+        let key = ObjectIdentifier(type)
+        let value = AnyDependencyFactory({ resolver in factory(resolver) })
+        let newFactories = factories.merging([key: value]) { $1 }
+        return .init(factories: newFactories)
     }
     
     /// Provides a way to resolve/create a dependency of certain type.
@@ -53,11 +54,10 @@ public struct Container: Resolver {
     ///     - type The type of resolved dependency.
     /// - Returns: A `Dependency` instance.
     public func resolve<Dependency>(_ type: Dependency.Type) -> Dependency {
-        let allResolved = factories.compactMap { $0.resolve(self) as? Dependency }
-        guard let dependency = allResolved.first else {
+        guard let factory = factories[ObjectIdentifier(type)] else {
             preconditionFailure("Cannot find depedency for type \(String(describing: type))")
         }
         
-        return dependency
+        return factory.resolve(self) as! Dependency
     }
 }

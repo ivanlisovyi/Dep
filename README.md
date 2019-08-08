@@ -75,7 +75,7 @@ Once you have your Swift package set up, adding Dep as a dependency is as easy a
 
 ```
 dependencies: [
-    .package(url: "https://github.com/kshin/Dep.git", from: "1.0.0")
+    .package(url: "https://github.com/kshin/Dep.git", from: "1.0.1")
 ]
 ```
 

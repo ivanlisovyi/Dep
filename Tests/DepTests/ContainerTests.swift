@@ -65,6 +65,22 @@ class ContainerTests: XCTestCase {
         XCTAssertFalse(first === second)
     }
     
+    func testThatNewlyRegisteredDependencyOverwritesPreviouslyAdded() {
+        class FakeDependencyTwo: FakeDependency {
+            override func doFake() -> Int {
+                return 2
+            }
+        }
+        
+        container = container?.register(FakeDependency.self, { _ in FakeDependency() })
+        let first = container?.resolve(FakeDependency.self)
+        
+        container = container?.register(FakeDependency.self, { _ in FakeDependencyTwo() })
+        let second = container?.resolve(FakeDependency.self)
+        
+        XCTAssertFalse(first?.doFake() == second?.doFake())
+    }
+    
     static var allTests = [
         ("testRegister", testThatItRegistersDependency),
         ("testResolve", testThatItResolvesDependency),
