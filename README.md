@@ -1,4 +1,5 @@
 # Dep
+[![Build Status](https://app.bitrise.io/app/567be5d243fe7062/status.svg?token=bj-LZASRzSQZx5HFI6aImA)](https://app.bitrise.io/app/567be5d243fe7062)
 
 **Dep** is a micro framework that implements a dependency injection using the *Service Locator* pattern and provides a convenient way to use these dependencies using `@Dependency` property wrapper
 
