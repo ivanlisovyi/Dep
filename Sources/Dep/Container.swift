@@ -22,13 +22,13 @@ import Foundation
 /// ```
 public struct Container: Resolver {
     /// The current known factories
-    let factories: [ObjectIdentifier: AnyDependencyFactory]
+    let factories: [ObjectIdentifier: Factory]
     
     public init() {
         factories = [:]
     }
     
-    private init(factories: [ObjectIdentifier: AnyDependencyFactory]) {
+    private init(factories: [ObjectIdentifier: Factory]) {
         self.factories = factories
     }
     
@@ -39,10 +39,9 @@ public struct Container: Resolver {
     ///     - factory: The closure-based factory that takes resolver as a parameter and returns
     ///     a dependency instance.
     /// - Returns: A `Resolver` instance.
-    public func register<Dependency>(_ type: Dependency.Type, _ factory: @escaping (Resolver) -> Dependency) -> Container {
+    public func register<Dependency>(_ type: Dependency.Type, _ factory: @escaping Factory) -> Container {
         let key = ObjectIdentifier(type)
-        let value = AnyDependencyFactory({ resolver in factory(resolver) })
-        let newFactories = factories.merging([key: value]) { $1 }
+        let newFactories = factories.merging([key: factory]) { $1 }
         return .init(factories: newFactories)
     }
     
@@ -58,6 +57,6 @@ public struct Container: Resolver {
             preconditionFailure("Cannot find depedency for type \(String(describing: type))")
         }
         
-        return factory.resolve(self) as! Dependency
+        return factory(self) as! Dependency
     }
 }

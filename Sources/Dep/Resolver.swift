@@ -13,6 +13,8 @@ import Combine
 ///
 /// Every Resolver must adhere to this contact.
 public protocol Resolver {
+    typealias Factory = (Resolver) -> Any
+    
     /// Provides a way to register a closure-based factory for resolving dependencies of certain type.
     ///
     /// - Parameters:
@@ -20,7 +22,7 @@ public protocol Resolver {
     ///     - factory: The closure-based factory that takes resolver as a parameter and returns
     ///     a dependency instance.
     /// - Returns: A `Resolver` instance.
-    func register<Dependency>(_ type: Dependency.Type, _ factory: @escaping (Resolver) -> Dependency) -> Container
+    func register<Dependency>(_ type: Dependency.Type, _ factory: @escaping Factory) -> Container
     
     /// Provides a way to resolve/create a dependency of certain type.
     ///
