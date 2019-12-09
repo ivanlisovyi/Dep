@@ -58,7 +58,7 @@ let testContainer = Container()
         return result
     }
 
-class ComplextObjectsTests: XCTestCase {
+class ComplexObjectsTests: XCTestCase {
   @Dependency(container: testContainer) var complexObject: ComplexObject
 
   func testThatItWorks() {
